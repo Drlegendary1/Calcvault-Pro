@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h2 id="welcome">Welcome</h2>
+  <p>Your finance tools in one place</p>
+</div>
+
+<div class="container">
+
+  <!-- GPA -->
+  <div class="card" onclick="openGPA()">
+    <div class="icon">📊</div>
+    <div class="text">
+      <p class="title">GPA CALCULATOR</p>
+      <p class="desc">Calculate your school GPA easily</p>
+    </div>
+  </div>
+
+  <!-- LOAN -->
+  <div class="card" onclick="openLoan()">
+    <div class="icon">💰</div>
+    <div class="text">
+      <p class="title">LOAN CALCULATOR</p>
+      <p class="desc">Interest & repayment calculator</p>
+    </div>
+  </div>
+
+  <!-- CRYPTO -->
+  <div class="card" onclick="openCrypto()">
+    <div class="icon">🪙</div>
+    <div class="text">
+      <p class="title">CRYPTO CALCULATOR</p>
+      <p class="desc">Profit & loss tracking</p>
+    </div>
+  </div>
+
+  <button class="logout" onclick="logout()">Logout</button>
+
+</div>
+
+<script>
+
+/* USER CHECK */
+let user = JSON.parse(localStorage.getItem("currentUser"));
+
+if (!user) {
+  window.location.href = "auth.html";
+} else {
+  document.getElementById("welcome").innerText =
+    "Welcome " + user.username + " 👋";
+}
+
+/* NAVIGATION */
+function openGPA() {
+  window.location.href = "Result.html";
+}
+
+function openLoan() {
+  window.location.href = "loan.html";
+}
+
+function openCrypto() {
+  window.location.href = "crypto.html";
+}
+
+/* LOGOUT */
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

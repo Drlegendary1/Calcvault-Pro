@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Calculator</title>
+
+  <link rel="stylesheet" href="loan.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>💰 Loan Calculator</h1>
+    <p>Calculate your loan repayment easily</p>
+
+    <input type="number" id="amount" placeholder="₦ Loan Amount">
+    <input type="number" id="rate" placeholder="Interest Rate (%)">
+    <input type="number" id="time" placeholder="Duration (Days)">
+
+    <button onclick="calculateLoan()">Calculate</button>
+
+    <div id="result"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+/* LOAN CALCULATION */
+function calculateLoan() {
+
+  let amount = Number(document.getElementById("amount").value);
+  let rate = Number(document.getElementById("rate").value);
+  let time = Number(document.getElementById("time").value);
+
+  if (!amount || !rate || !time) {
+    document.getElementById("result").innerText =
+      "⚠️ Please fill all fields";
+    return;
+  }
+
+  // Simple daily interest logic
+  let interest = (amount * rate * time) / 100;
+  let total = amount + interest;
+  let daily = total / time;
+
+  document.getElementById("result").innerHTML = `
+    <h3>Results:</h3>
+    <p>Total Interest: ₦${interest.toFixed(2)}</p>
+    <p>Total Repayment: ₦${total.toFixed(2)}</p>
+    <p>Daily Payment: ₦${daily.toFixed(2)}</p>
+  `;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e88e5">
+
+  <title>Auth System</title>
+  <link rel="stylesheet" href="Style.css">
+
+  <style>
+
+/* BACKGROUND ANIMATION */
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#msg {
+  margin-top: 12px;
+  font-weight: bold;
+  min-height: 20px;
+  color: white;
+}
+  </style>
+</head>
+
+<body>
+  
+  <nav class="top-nav">
+  <div class="nav-brand">🔐 CalcVault Pro</div>
+  <div class="nav-links">
+    <a href="javascript:void(0)" onclick="showLogin()">Login</a>
+    <a href="javascript:void(0)" onclick="showRegister()">Register</a>
+    <a href="About.html" class="nav-btn">About</a>
+  </div>
+</nav>
+
+
+<div class="container">
+
+  <!-- REGISTER -->
+  <div id="registerBox">
+    <h1>CALCVAULT PRO </h1>
+    <h2>REGISTER</h2>
+
+    <input id="regUser" placeholder="Username or Email">
+    <input id="regPass" type="password" placeholder="Password">
+    <input id="regConfirm" type="password" placeholder="Confirm Password">
+
+    <button onclick="register()">Register</button>
+
+    <p class="switch">Don't have an account? <a href="javascript:void(0)" onclick="showLogin()">Login</a></p>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="loginBox" style="display:none;">
+    <h1>CALCVAULT PRO</h1>
+    <h2>Login</h2>
+
+    <input id="logUser" placeholder="Username or Email">
+    <input id="logPass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p class="switch">Already have an account? <a href="javascript:void(0)" onclick="showRegister()">Register</a></p>
+  </div>
+
+  <div id="msg"></div>
+
+
+</div>
+<footer class="auth-footer">
+  <p>&copy; 2026 <span>CalcVault Pro</span>. All rights reserved.</p>
+</footer>
+
+
+<script>
+
+function msg(text) {
+  document.getElementById("msg").innerText = text;
+}
+
+/* SWITCH */
+function showLogin() {
+  document.getElementById("registerBox").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+  msg("");
+}
+
+function showRegister() {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("registerBox").style.display = "block";
+  msg("");
+}
+
+/* REGISTER */
+function register() {
+
+  let username = regUser.value.trim();
+  let password = regPass.value.trim();
+  let confirm = regConfirm.value.trim();
+
+  if (!username || !password || !confirm) {
+    return msg("Fill all fields");
+  }
+
+  if (password !== confirm) {
+    return msg("Passwords do not match");
+  }
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  if (users.find(u => u.username === username)) {
+    return msg("User already exists");
+  }
+
+  users.push({ username, password });
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  msg("Registered successfully ✔");
+
+  setTimeout(showLogin, 800);
+}
+
+/* LOGIN (IMPROVED LOGIC) */
+function login() {
+
+  let input = logUser.value.trim();
+  let password = logPass.value.trim();
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let user = users.find(u => u.username === input);
+
+  /* 1. USER NOT FOUND */
+  if (!user) {
+
+    if (input.includes("@")) {
+      return msg("Email not registered");
+    } else {
+      return msg("Username not registered");
+    }
+  }
+
+  /* 2. PASSWORD CHECK */
+  if (user.password !== password) {
+    return msg("Incorrect password");
+  }
+
+  /* SUCCESS */
+  localStorage.setItem("currentUser", JSON.stringify(user));
+
+  msg("Welcome " + user.username);
+
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 800);
+}
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js")
+    .then(() => {
+      console.log("Service Worker Registered");
+    });
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Calculator</title>
+
+  <link rel="stylesheet" href="crypto.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>🪙 Crypto Profit Calculator</h1>
+    <p>Simple profit & loss calculator</p>
+
+    <input type="number" id="amount" placeholder="₦ Amount Invested">
+    <input type="number" id="buy" placeholder="Buy Price">
+    <input type="number" id="sell" placeholder="Sell Price">
+
+    <button onclick="calculateCrypto()">Calculate</button>
+    <button onclick="resetFields()" style="background:#777;">Reset</button>
+
+    <div id="result"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+/* CALCULATE CRYPTO */
+function calculateCrypto() {
+
+  let amount = Number(document.getElementById("amount").value);
+  let buy = Number(document.getElementById("buy").value);
+  let sell = Number(document.getElementById("sell").value);
+
+  if (!amount || !buy || !sell) {
+    document.getElementById("result").innerHTML =
+      "⚠️ Please fill all fields";
+    return;
+  }
+
+  // auto quantity
+  let qty = amount / buy;
+
+  let cost = amount;
+  let value = qty * sell;
+
+  let profit = value - cost;
+  let percent = (profit / cost) * 100;
+
+  let statusColor = profit >= 0 ? "green" : "red";
+
+  document.getElementById("result").innerHTML = `
+    <h3>Results</h3>
+
+    <p>Quantity: ${qty.toFixed(6)}</p>
+    <p>Total Cost: ₦${cost.toFixed(2)}</p>
+    <p>Total Value: ₦${value.toFixed(2)}</p>
+
+    <p style="color:${statusColor}">
+      Profit/Loss: ₦${profit.toFixed(2)}
+    </p>
+
+    <p style="color:${statusColor}">
+      Profit %: ${percent.toFixed(2)}%
+    </p>
+  `;
+}
+
+/* RESET */
+function resetFields() {
+  document.getElementById("amount").value = "";
+  document.getElementById("buy").value = "";
+  document.getElementById("sell").value = "";
+  document.getElementById("result").innerHTML = "";
+}
+
+</script>
+
+</body>
+</html>
